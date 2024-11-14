@@ -1,0 +1,35 @@
+name: DLMS App Builder
+
+on:
+  workflow_dispatch:
+  push:
+      branches:
+        - main
+      paths:
+        - .github/workflows/build-docker.yml
+        - Dockerfile
+
+jobs:
+  build:
+    name: Build and push dlms-app-builder image
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+    - name: Clone
+      uses: actions/checkout@v4
+
+    - name: Log in to the Container registry
+      uses: docker/login-action@v3
+      with:
+        registry: https://ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Build and push dlms-app-builder to GitHub Packages
+      uses: docker/build-push-action@v6
+      with:
+        push: true
+        tags: ghcr.io/wirepas/dlms-app-builder:latest
