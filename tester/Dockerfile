@@ -3,12 +3,13 @@ FROM ghcr.io/wirepas/dlms-app-builder:edge
 # Define argument for non-root user
 ARG user=wirepas
 
-# Install dnsutils
+# Install dnsutils and awscli
 USER root
 RUN dpkg --add-architecture i386 && \
     apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y \
-    dnsutils && \
+    dnsutils \
+    awscli && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Download and extract the JLink software
