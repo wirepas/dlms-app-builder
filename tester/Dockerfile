@@ -9,8 +9,7 @@ RUN dpkg --add-architecture i386 && \
     apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y \
     dnsutils \
-    smbclient \
-    cifs-utils && \
+    awscli && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Download and extract the JLink software
