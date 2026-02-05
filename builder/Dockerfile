@@ -1,4 +1,4 @@
-FROM wirepas/sdk-builder:v1.5
+FROM wirepas/sdk-builder:v2.2
 
 # Define argument for non-root user
 ARG user=wirepas
@@ -15,13 +15,18 @@ RUN dpkg --add-architecture i386 && \
         curl \
         libpcre3 \
         libpcre3-dev \
-        libtinyxml2-6a \
-        gnupg && \
-    wget -qO - https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add - && \
-    echo "deb http://apt.llvm.org/focal/ llvm-toolchain-focal-18 main" > /etc/apt/sources.list.d/llvm-toolchain-focal.list && \
-    apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-        clang-format-18 && \
+        libtinyxml2-10 \
+        gnupg 
+
+RUN wget -qO - https://apt.llvm.org/llvm-snapshot.gpg.key \
+    | gpg --dearmor -o /usr/share/keyrings/llvm.gpg \
+    && echo "deb [signed-by=/usr/share/keyrings/llvm.gpg] \
+    http://apt.llvm.org/noble/ llvm-toolchain-noble-18 main" \
+    > /etc/apt/sources.list.d/llvm-toolchain-noble.list
+
+RUN apt-get update \
+    && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+    clang-format-18 && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Download and extract Cppcheck 2.7 source code
