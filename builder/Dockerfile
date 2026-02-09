@@ -16,7 +16,8 @@ RUN dpkg --add-architecture i386 && \
         libpcre3 \
         libpcre3-dev \
         libtinyxml2-10 \
-        gnupg 
+        gnupg \
+        python3.12-venv
 
 RUN wget -qO - https://apt.llvm.org/llvm-snapshot.gpg.key \
     | gpg --dearmor -o /usr/share/keyrings/llvm.gpg \
